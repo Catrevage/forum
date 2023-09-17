@@ -6,9 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +50,25 @@ public class TopicosController {
 	public DadosListagemTopicos detalhar(@PathVariable Long id) {
 		Topicos topico = repository.getReferenceById(id);
 		return new DadosListagemTopicos(topico);
+	}
+	
+	@PutMapping("/{id}")
+	@Transactional
+	public void atualizar(@PathVariable Long id, @RequestBody @Valid DadosTopicos dados) {
+		var topicos = repository.getReferenceById(id);
+		var topicoExistente = repository.getByTitulo(dados.titulo());
+		if (topicoExistente == null) {
+			topicos.atualizar(dados);
+		} else {
+			throw new RuntimeException("Já existe um topico com o mesmo título!");
+		}		
+		
+	}
+	
+	@DeleteMapping("/{id}")
+	@Transactional
+	public void delete(@PathVariable Long id) {
+		repository.deleteById(id);		
 	}
 
 }

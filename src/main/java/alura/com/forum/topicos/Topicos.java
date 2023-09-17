@@ -81,7 +81,21 @@ public class Topicos {
 	public String getTitulo() {
 		return titulo;
 	}
-	
-	
+
+	public void atualizar(DadosTopicos dados) {
+		if (dados.autor() != null) {
+			this.autor = dados.autor();
+		}
+		if (dados.titulo() != null) {
+			this.titulo = dados.titulo();
+		}
+		if (dados.mensagem() != null) {
+			this.mensagem = dados.mensagem();
+		}
+		if (dados.curso() != null) {
+			this.curso = dados.curso();
+		}	
+		
+	}	
 
 }
